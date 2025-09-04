@@ -7,7 +7,7 @@ import cors from 'cors'
 
 const app = express()
 app.use(cors({
-  origin: 'https://tnas-nine.vercel.app', // front hospedado na Vercel
+  origin: '*', // front hospedado na Vercel
   methods: ['GET','POST','PUT','DELETE'],
 }));
 app.use(express.json())
