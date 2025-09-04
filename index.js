@@ -6,7 +6,10 @@ import CategoryRouter from './routes/CategoryRoutes.js'
 import cors from 'cors'
 
 const app = express()
-app.use(cors())
+app.use(cors({
+  origin: 'tnas-nine.vercel.app', // front hospedado na Vercel
+  methods: ['GET','POST','PUT','DELETE'],
+}));
 app.use(express.json())
 
 app.use('/document', DocumentRouter)
