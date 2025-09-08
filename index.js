@@ -15,6 +15,7 @@ app.use(express.json())
 app.use('/document', DocumentRouter)
 app.use('/category', CategoryRouter)
 
-app.listen(3030, () => {
+app.listen(3030, (res) => {
     console.log("Servidor Rodando")
+    res.status(200).json({msg: "Ok"})
 })
