@@ -8,14 +8,17 @@ import cors from 'cors'
 const app = express()
 app.use(cors({
   origin: '*', // front hospedado na Vercel
-  methods: ['GET','POST','PUT','DELETE'],
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
 }));
 app.use(express.json())
 
 app.use('/document', DocumentRouter)
 app.use('/category', CategoryRouter)
 
-app.listen(3030, (res) => {
-    console.log("Servidor Rodando")
-    res.status(200).json({msg: "Ok"})
+app.use("/", (_req, res) => {
+  res.status(200).json({ msg: "Ok" })
+})
+app.listen(3030, () => {
+  console.log("Servidor Rodando")
+
 })
