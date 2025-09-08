@@ -18,7 +18,7 @@ app.use('/category', CategoryRouter)
 app.use("/", (_req, res) => {
   res.status(200).json({ msg: "Ok" })
 })
-app.listen(3030, () => {
+app.listen(3000, () => {
   console.log("Servidor Rodando")
 
 })
