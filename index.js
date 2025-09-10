@@ -4,6 +4,7 @@ dotenv.config()
 import DocumentRouter from './routes/DocumentRoutes.js'
 import CategoryRouter from './routes/CategoryRoutes.js'
 import cors from 'cors'
+import UserRouter from './routes/UserRoutes.js'
 const PORT = process.env.PORT
 const app = express()
 app.use(cors({
@@ -12,6 +13,7 @@ app.use(cors({
 }));
 app.use(express.json())
 
+app.use('/user', UserRouter)
 app.use('/document', DocumentRouter)
 app.use('/category', CategoryRouter)
 
