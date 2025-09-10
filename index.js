@@ -4,7 +4,7 @@ dotenv.config()
 import DocumentRouter from './routes/DocumentRoutes.js'
 import CategoryRouter from './routes/CategoryRoutes.js'
 import cors from 'cors'
-const PORT = 3000
+const PORT = process.env.PORT
 const app = express()
 app.use(cors({
   origin: '*', // front hospedado na Vercel
