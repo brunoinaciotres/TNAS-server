@@ -8,7 +8,7 @@ import UserRouter from './routes/UserRoutes.js'
 const PORT = process.env.PORT
 const app = express()
 app.use(cors({
-  origin: '*', // front hospedado na Vercel
+  origin: '*',
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
 }));
 app.use(express.json())

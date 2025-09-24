@@ -1,9 +1,8 @@
 import * as db from './index.js'
-import chalk from 'chalk'
+
 class CategoryModel {
     async getAll() {
         try {
-            console.log(chalk.white.bgBlue.bold('🔵 [Category Model] Iniciando consulta: getAll categorias'))
 
             const query = `
         SELECT id, nome FROM categorias
@@ -11,16 +10,31 @@ class CategoryModel {
 
             const results = await db.query(query)
 
-            console.log(chalk.white.bgGreen.bold('✅ [Category Model] Consulta concluída com sucesso. Resultados:'))
-            console.log(chalk.green(JSON.stringify(results.rows, null, 2)))
 
             return results.rows
         } catch (err) {
-            console.error(
-                chalk.white.bgRed.bold('❌ [Category Model] Erro ao consultar categorias:'),
-                chalk.red(err.message)
-            )
+            console.error(err)
             throw err
+        }
+    }
+
+    async getAllWithTotals() {
+        try {
+            const query = `
+                SELECT c.nome, SUM(d.price_in_cents) as total_gasto
+                FROM categorias c
+                LEFT JOIN documents d ON d.category = c.id
+                GROUP BY c.nome;
+            `;
+            const results = await db.query(query);
+            return results.rows.map(row => ({
+                ...row,
+                total_gasto: Number(row.total_gasto),
+                total_gasto_in_reais: Number(row.total_gasto) / 100 // já converte de centavos para reais
+            }));
+        } catch (err) {
+            console.error(err);
+            throw err;
         }
     }
 }

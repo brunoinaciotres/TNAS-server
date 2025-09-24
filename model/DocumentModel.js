@@ -1,5 +1,5 @@
 import * as db from './index.js'
-import chalk from 'chalk'
+
 
 
 class DocumentModel {
@@ -20,11 +20,9 @@ class DocumentModel {
             ]
 
             const result = await db.query(query, values)
-            console.log(chalk.black.bgGreen.bold('✔ [Document Model] Documento inserido com sucesso:'), chalk.green(JSON.stringify(result.rows[0], null, 2)))
             return result.rows[0]
 
         } catch (err) {
-            console.log(chalk.white.bgRed.bold('✖ [Document Model] Erro ao inserir documento:'), chalk.red(err.message))
             throw err
         }
     }
@@ -37,14 +35,12 @@ class DocumentModel {
             const result = db.query(query)
             return result.rows
         } catch (err) {
-            console.log(chalk.white.bgRed.bold('✖ [Document Model] Erro ao buscar todos documentos:'), chalk.red(err.message))
             throw err
 
         }
     }
     async getLatestDocs() {
         try {
-            console.log(chalk.black.bgYellow.bold('⏳ [Document Model] Iniciando consulta getLatestDocs...'))
 
             const query = `
         SELECT 
@@ -62,13 +58,11 @@ class DocumentModel {
       `
 
             const result = await db.query(query)
-            console.log(chalk.black.bgGreen.bold('✔ [Document Model] Consulta getLatestDocs executada com sucesso. Quantidade de registros:'), chalk.blue(result.rows.length))
           
 
             return result.rows
 
         } catch (err) {
-            console.log(chalk.white.bgRed.bold('✖ [Document Model] Erro ao buscar últimas notas:'), chalk.red(err.message))
             return { success: false, message: 'Erro ao buscar últimas notas' }
         }
     }
