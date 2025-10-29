@@ -66,9 +66,15 @@ class DocumentController {
     async getDocsByCategorieId(req, res){
         try {
             const {categorieId} = req.body
-            
-        } catch (e) {
 
+            const docs = await DocumentModel.getDocsByCategorieId(categorieId)
+
+            return res.status(200).json({
+                success: true,
+                docs
+            })
+        } catch (e) {
+             return res.status(500).json({ success: false, message: 'Erro ao buscar documentos', error:e })
         }
     }
 }
