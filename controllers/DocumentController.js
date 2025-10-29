@@ -61,6 +61,16 @@ class DocumentController {
             return res.status(500).json({ success: false, message: 'Erro ao buscar últimas notas' })
         }
     }
+
+    
+    async getDocsByCategorieId(req, res){
+        try {
+            const {categorieId} = req.body
+            
+        } catch (e) {
+
+        }
+    }
 }
 
 export default new DocumentController()

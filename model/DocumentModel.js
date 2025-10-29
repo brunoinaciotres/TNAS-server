@@ -66,6 +66,21 @@ class DocumentModel {
             return { success: false, message: 'Erro ao buscar últimas notas' }
         }
     }
+
+    async getDocsByCategorieId(id){
+        try {
+            const query = 'SELECT id, date, description, price_in_cents, doc_number, is_fiscal_doc FROM documents WHERE category=$1'
+            const values = [
+                id
+            ]
+
+            const result = await db.query(query, values)
+            return result.rows
+
+        } catch(e){
+             return { success: false, message: 'Erro ao buscar documentos por Id de Categoria', error: e }
+        }
+    }
 }
 
 export default new DocumentModel()
