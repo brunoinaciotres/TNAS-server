@@ -68,7 +68,9 @@ class DocumentModel {
     }
 
     async getDocsByCategorieId(id){
+        
         try {
+            console.log("id:: " + id)
             const query = 'SELECT id, date, description, price_in_cents, doc_number, is_fiscal_doc FROM documents WHERE category=$1'
             const values = [
                 id

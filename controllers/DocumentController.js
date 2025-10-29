@@ -65,9 +65,9 @@ class DocumentController {
     
     async getDocsByCategorieId(req, res){
         try {
-            const {categorieId} = req.body
+            const {id} = req.body
 
-            const docs = await DocumentModel.getDocsByCategorieId(categorieId)
+            const docs = await DocumentModel.getDocsByCategorieId(id)
 
             return res.status(200).json({
                 success: true,
