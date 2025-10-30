@@ -51,7 +51,7 @@ class DocumentController {
             })
 
 
-            
+
             return res.status(200).json({
                 success: true,
                 latestDocs
@@ -62,19 +62,25 @@ class DocumentController {
         }
     }
 
-    
-    async getDocsByCategorieId(req, res){
+
+    async getDocsByCategorieId(req, res) {
         try {
-            const {id} = req.body
-
+            const { id } = req.body
             const docs = await DocumentModel.getDocsByCategorieId(id)
+           
+            if (docs.success) {
+                return res.status(200).json({
+                    docs
+                })
+            }
 
-            return res.status(200).json({
-                success: true,
-                docs
-            })
+             return res.status(200).json({
+                    docs
+                })
+
+
         } catch (e) {
-             return res.status(500).json({ success: false, message: 'Erro ao buscar documentos', error:e })
+            return res.status(500).json({ success: false, message: 'Erro ao buscar documentos', error: e })
         }
     }
 }
