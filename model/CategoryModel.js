@@ -21,10 +21,10 @@ class CategoryModel {
     async getAllWithTotals() {
         try {
             const query = `
-                SELECT c.nome, SUM(d.price_in_cents) as total_gasto
+                SELECT c.id, c.nome, SUM(d.price_in_cents) as total_gasto
                 FROM categorias c
                 LEFT JOIN documents d ON d.category = c.id
-                GROUP BY c.nome;
+                GROUP BY c.id, c.nome;
             `;
             const results = await db.query(query);
             return results.rows.map(row => ({
@@ -37,6 +37,8 @@ class CategoryModel {
             throw err;
         }
     }
+
+
 }
 
 
