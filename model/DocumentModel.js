@@ -80,10 +80,10 @@ class DocumentModel {
           
 
             if (result.rows.length > 0) {
-                return {success: true, rows: result.rows}
+                return result.rows
             }
             
-            return {success: false, msg:"Não há notas"}
+            return []
 
         } catch(e){
              return { success: false, message: 'Erro ao buscar documentos por Id de Categoria', error: e }

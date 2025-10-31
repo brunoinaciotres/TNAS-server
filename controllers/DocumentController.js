@@ -67,16 +67,15 @@ class DocumentController {
         try {
             const { id } = req.body
             const docs = await DocumentModel.getDocsByCategorieId(id)
-           
-            if (docs.success) {
+
+            if (docs) {
                 return res.status(200).json({
+                    success: true,
                     docs
                 })
             }
 
-             return res.status(200).json({
-                    docs
-                })
+            return res.status(200).json("Não há notas")
 
 
         } catch (e) {
