@@ -58,7 +58,7 @@ class DocumentModel {
       `
 
             const result = await db.query(query)
-          
+
 
             return result.rows
 
@@ -67,26 +67,40 @@ class DocumentModel {
         }
     }
 
-    async getDocsByCategorieId(id){
-        
+    async getDocsByCategorieId(id) {
+
         try {
-            console.log("AQ NO MODEL")
-            const query = 'SELECT id, date, description, price_in_cents, doc_number, is_fiscal_doc FROM documents WHERE category=$1'
+            console.log("aq")
+            const query = `
+                            SELECT 
+                                d.id,
+                                d.date,
+                                d.description,
+                                d.doc_number,
+                                d.price_in_cents,
+                                d.is_fiscal_doc,
+                                d.category,           
+                                c.nome AS category_name  
+                            FROM documents d
+                            INNER JOIN categorias c ON d.category = c.id
+                            WHERE d.category = $1;
+                        `
+
             const values = [
                 id
             ]
 
             const result = await db.query(query, values)
-          
+            console.log(result)
 
             if (result.rows.length > 0) {
                 return result.rows
             }
-            
+
             return []
 
-        } catch(e){
-             return { success: false, message: 'Erro ao buscar documentos por Id de Categoria', error: e }
+        } catch (e) {
+            return { success: false, message: 'Erro ao buscar documentos por Id de Categoria', error: e }
         }
     }
 }

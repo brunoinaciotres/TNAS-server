@@ -69,6 +69,11 @@ class DocumentController {
             const docs = await DocumentModel.getDocsByCategorieId(id)
 
             if (docs) {
+
+                docs.forEach(doc => {
+                    let formattedDate = doc.date.toISOString().split('T')[0]
+                    doc.date = formattedDate
+                })
                 return res.status(200).json({
                     success: true,
                     docs
