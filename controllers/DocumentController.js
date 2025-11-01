@@ -25,8 +25,9 @@ class DocumentController {
                 isFiscalDoc: docNumberValue ? 1 : 0
             }
 
+            console.log(docData)
             const newDoc = await DocumentModel.create(docData)
-
+            
             return res.status(201).json({
                 success: true,
                 newDoc

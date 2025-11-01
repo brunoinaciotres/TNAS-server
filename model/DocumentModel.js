@@ -18,7 +18,7 @@ class DocumentModel {
                 data.docNumberValue,
                 data.isFiscalDoc
             ]
-
+        
             const result = await db.query(query, values)
             return result.rows[0]
 
