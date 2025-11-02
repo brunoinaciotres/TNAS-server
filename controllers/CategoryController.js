@@ -20,7 +20,7 @@ class CategoryController {
 
     async getAllWithTotals(_, res) {
         try {
-            const categories = await CategoryModel.getAllWithTotals();
+            const categories = await CategoryModel.getAllWithTotalsCurrentMonth();
 
             return res.status(200).json({
                 success: true,

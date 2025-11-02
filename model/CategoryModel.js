@@ -18,25 +18,32 @@ class CategoryModel {
         }
     }
 
-    async getAllWithTotals() {
+    async getAllWithTotalsCurrentMonth() {
         try {
             const query = `
-                SELECT c.id, c.nome, SUM(d.price_in_cents) as total_gasto
-                FROM categorias c
-                LEFT JOIN documents d ON d.category = c.id
-                GROUP BY c.id, c.nome;
-            `;
+            SELECT 
+                c.id, 
+                c.nome, 
+                COALESCE(SUM(d.price_in_cents), 0) AS total_gasto
+            FROM categorias c
+            LEFT JOIN documents d 
+                ON d.category = c.id
+                AND EXTRACT(MONTH FROM d.date) = EXTRACT(MONTH FROM CURRENT_DATE)
+                AND EXTRACT(YEAR FROM d.date) = EXTRACT(YEAR FROM CURRENT_DATE)
+            GROUP BY c.id, c.nome;
+        `;
             const results = await db.query(query);
             return results.rows.map(row => ({
                 ...row,
                 total_gasto: Number(row.total_gasto),
-                total_gasto_in_reais: Number(row.total_gasto) / 100 // já converte de centavos para reais
+                total_gasto_in_reais: Number(row.total_gasto) / 100
             }));
         } catch (err) {
             console.error(err);
             throw err;
         }
     }
+
 
 
 }
