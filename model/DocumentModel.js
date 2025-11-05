@@ -18,7 +18,7 @@ class DocumentModel {
                 data.docNumberValue,
                 data.isFiscalDoc
             ]
-        
+
             const result = await db.query(query, values)
             return result.rows[0]
 
@@ -91,7 +91,6 @@ class DocumentModel {
             ]
 
             const result = await db.query(query, values)
-            console.log(result)
 
             if (result.rows.length > 0) {
                 return result.rows
@@ -101,6 +100,26 @@ class DocumentModel {
 
         } catch (e) {
             return { success: false, message: 'Erro ao buscar documentos por Id de Categoria', error: e }
+        }
+    }
+
+    async getDocsByCategorieIdAndDate(categoryId, month, year) {
+        try {
+            const query = `SELECT *
+                        FROM documents
+                        WHERE category = $1
+                            AND EXTRACT(MONTH FROM date) = $2
+                            AND EXTRACT(YEAR FROM date) = $3
+                        ORDER BY date DESC
+                        `
+            const values =  [categoryId, month, year]
+            const results = await db.query(query,values)
+            console.log("----RESULTADOS----")
+            console.log(results)
+            return results.rows
+
+        } catch (e) {
+            console.log(e)
         }
     }
 }

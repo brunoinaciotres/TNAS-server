@@ -25,9 +25,8 @@ class DocumentController {
                 isFiscalDoc: docNumberValue ? 1 : 0
             }
 
-            console.log(docData)
             const newDoc = await DocumentModel.create(docData)
-            
+
             return res.status(201).json({
                 success: true,
                 newDoc
@@ -50,8 +49,6 @@ class DocumentController {
                 let formattedDate = doc.date.toISOString().split('T')[0]
                 doc.date = formattedDate
             })
-
-
 
             return res.status(200).json({
                 success: true,
@@ -88,6 +85,33 @@ class DocumentController {
             return res.status(500).json({ success: false, message: 'Erro ao buscar documentos', error: e })
         }
     }
+
+    async getDocsByCategorieIdAndDate(req, res) {
+        try {
+            const { categoryId, month, year } = req.body
+            if (!categoryId) return res.status(400).json({ success: false, msg: "Category ID não pode ser nulo" })
+            const docs = await DocumentModel.getDocsByCategorieIdAndDate(categoryId, month, year)
+
+            if (docs.length > 0) {
+                return res.status(200).json({
+                    success: true,
+                    docs
+                })
+            }
+
+             return res.status(200).json({
+                    success: true,
+                    docs: [],
+                    msg:"Nenhum documento encontrado"
+                })
+
+
+        } catch (e) {
+            console.log(e)
+        }
+    }
 }
+
+
 
 export default new DocumentController()
