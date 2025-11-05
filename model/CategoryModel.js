@@ -1,6 +1,22 @@
 import * as db from './index.js'
 
 class CategoryModel {
+    async create(categoryName){
+        try {
+            const query = `INSERT INTO
+                            categorias (nome)
+                            VALUES($1)
+                            `
+
+            const values = [categoryName]
+            const result = await db.query(query,values)
+            return result.rows[0]
+        }catch (e){
+            console.log(e)
+            throw e
+        }
+    }
+
     async getAll() {
         try {
 

@@ -4,5 +4,6 @@ const CategoryRouter = express.Router()
 
 CategoryRouter.get('/getAll', CategoryController.getAll)
 CategoryRouter.get('/getAllWithTotals', CategoryController.getAllWithTotals)
+CategoryRouter.post('/create', CategoryController.create)
 
 export default CategoryRouter

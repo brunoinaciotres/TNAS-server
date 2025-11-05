@@ -10,6 +10,7 @@ let pool = new Pool({
   host: process.env.DB_HOST,
   port: process.env.DB_PORT,
   database: process.env.DB_NAME,
+  charset: 'utf8'
   // ssl: {
   //   ca: fs.readFileSync("global-bundle.pem").toString(),
   //   rejectUnauthorized: true
@@ -21,6 +22,8 @@ let pool = new Pool({
 export const query = async (text, params) => {
   const start = Date.now()
   const res = await pool.query(text, params)
+  console.log("------QUERY------")
+  console.log(text, params)
   const duration = Date.now() - start
   return res
 }

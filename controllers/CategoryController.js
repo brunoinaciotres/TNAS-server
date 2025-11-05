@@ -1,6 +1,26 @@
 import CategoryModel from '../model/CategoryModel.js'
 
 class CategoryController {
+    async create(req, res) {
+        try {
+            const { categoryName } = req.body
+            if (!categoryName) return res.status(400).json({ success: false, msg: "Falta de parâmetro" })
+            const newCategory = await CategoryModel.create(categoryName)
+            console.log(req.body.categoryName)
+
+            return res.status(201).json({
+                success: true,
+                newCategory
+            })
+        } catch (err) {
+            console.error(err);
+            return res.status(500).json({
+                message: 'Erro ao criar categoria',
+                error: err.message
+            });
+        }
+    }
+
     async getAll(_, res) {
         try {
             const categories = await CategoryModel.getAll();
