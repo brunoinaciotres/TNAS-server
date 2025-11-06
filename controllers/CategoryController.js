@@ -3,10 +3,11 @@ import CategoryModel from '../model/CategoryModel.js'
 class CategoryController {
     async create(req, res) {
         try {
-            const { categoryName } = req.body
+            const { categoryName, isExpense } = req.body
+            console.log("--------ISexPENSE--------")
+            console.log(isExpense)
             if (!categoryName) return res.status(400).json({ success: false, msg: "Falta de parâmetro" })
-            const newCategory = await CategoryModel.create(categoryName)
-            console.log(req.body.categoryName)
+            const newCategory = await CategoryModel.create(categoryName, isExpense)
 
             return res.status(201).json({
                 success: true,
@@ -16,6 +17,26 @@ class CategoryController {
             console.error(err);
             return res.status(500).json({
                 message: 'Erro ao criar categoria',
+                error: err.message
+            });
+        }
+    }
+
+    async delete(req, res) {
+        try {
+            const { categoryId } = req.body
+  
+            if (!categoryId) return res.status(400).json({ success: false, msg: "Falta de parâmetro" })
+            const result = await CategoryModel.delete(categoryId)
+
+            return res.status(201).json({
+                success: true,
+                result
+            })
+        } catch (err) {
+            console.error(err);
+            return res.status(500).json({
+                message: 'Erro ao excluir categoria',
                 error: err.message
             });
         }

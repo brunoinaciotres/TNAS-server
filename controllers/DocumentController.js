@@ -40,6 +40,7 @@ class DocumentController {
         }
     }
 
+
     async getLatestDocs(_, res) {
         try {
 

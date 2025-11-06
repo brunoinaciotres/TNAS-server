@@ -1,14 +1,30 @@
 import * as db from './index.js'
 
 class CategoryModel {
-    async create(categoryName){
+    async create(categoryName, is_expense){
         try {
             const query = `INSERT INTO
-                            categorias (nome)
-                            VALUES($1)
+                            categorias (nome, is_expense)
+                            VALUES($1, $2)
                             `
 
-            const values = [categoryName]
+            const values = [categoryName.toUpperCase(), is_expense]
+            const result = await db.query(query,values)
+            return result.rows[0]
+        }catch (e){
+            console.log(e)
+            throw e
+        }
+    }
+
+    async delete(categoryId){
+        try {
+            const query = `DELETE FROM
+                            categorias 
+                            WHERE id = $1
+                            `
+
+            const values = [categoryId]
             const result = await db.query(query,values)
             return result.rows[0]
         }catch (e){
@@ -21,7 +37,7 @@ class CategoryModel {
         try {
 
             const query = `
-        SELECT id, nome FROM categorias
+        SELECT id, nome FROM categorias ORDER BY id DESC
       `
 
             const results = await db.query(query)
@@ -46,7 +62,8 @@ class CategoryModel {
                 ON d.category = c.id
                 AND EXTRACT(MONTH FROM d.date) = EXTRACT(MONTH FROM CURRENT_DATE)
                 AND EXTRACT(YEAR FROM d.date) = EXTRACT(YEAR FROM CURRENT_DATE)
-            GROUP BY c.id, c.nome;
+            GROUP BY c.id, c.nome
+            ORDER BY c.id DESC
         `;
             const results = await db.query(query);
             return results.rows.map(row => ({
