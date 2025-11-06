@@ -25,14 +25,21 @@ class CategoryController {
     async delete(req, res) {
         try {
             const { categoryId } = req.body
-  
+
             if (!categoryId) return res.status(400).json({ success: false, msg: "Falta de parâmetro" })
             const result = await CategoryModel.delete(categoryId)
+            if (result.success) {
+                return res.status(201).json({
+                    success: true,
+                    result
+                })
+            }
 
-            return res.status(201).json({
-                success: true,
-                result
-            })
+            return res.status(400).json({
+                    success: false,
+                    result
+                })
+
         } catch (err) {
             console.error(err);
             return res.status(500).json({

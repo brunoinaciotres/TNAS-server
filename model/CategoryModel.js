@@ -26,10 +26,13 @@ class CategoryModel {
 
             const values = [categoryId]
             const result = await db.query(query,values)
-            return result.rows[0]
+            return {success: true,rows: result.rows[0]}
         }catch (e){
             console.log(e)
-            throw e
+            if (e.code == '23001') {
+                return {success: false, msg:"Não é possível excluir uma categoria que possua notas registradas!"}
+            }
+            
         }
     }
 
