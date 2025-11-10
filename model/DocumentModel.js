@@ -27,6 +27,20 @@ class DocumentModel {
         }
     }
 
+    async delete(docId){
+        try {
+            const query = `DELETE FROM documents WHERE id = $1`
+            const values = [docId]
+            const res = await db.query(query, values)
+            if (res.rowCount > 0){
+                return res.rows
+            }
+            return []
+        } catch (e){
+            throw e
+        }
+    }
+
     async getAllDocs() {
         try {
             const query = `SELECT date, description, price_in_cents, doc_number, category

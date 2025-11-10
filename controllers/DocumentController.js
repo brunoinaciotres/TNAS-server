@@ -40,6 +40,23 @@ class DocumentController {
         }
     }
 
+    async delete(req,res){
+        try {
+            const {docId} = req.body
+            const res = await DocumentModel.delete(docId)
+            return res.status(201).json({
+                success: true,
+                res
+            })
+
+        } catch(e){
+            return res.status(500).json({ 
+                success: false, 
+                message: 'Erro ao deletar documento',
+                error: e.message 
+            })
+        }
+    }
 
     async getLatestDocs(_, res) {
         try {
