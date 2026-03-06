@@ -3,11 +3,10 @@ import CategoryModel from '../model/CategoryModel.js'
 class CategoryController {
     async create(req, res) {
         try {
-            const { categoryName, isExpense } = req.body
-            console.log("--------ISexPENSE--------")
-            console.log(isExpense)
+            const { categoryName, isExpense, markup } = req.body
+            
             if (!categoryName) return res.status(400).json({ success: false, msg: "Falta de parâmetro" })
-            const newCategory = await CategoryModel.create(categoryName, isExpense)
+            const newCategory = await CategoryModel.create(categoryName, isExpense, markup)
 
             return res.status(201).json({
                 success: true,

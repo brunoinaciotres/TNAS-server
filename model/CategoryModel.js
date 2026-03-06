@@ -1,14 +1,14 @@
 import * as db from './index.js'
 
 class CategoryModel {
-    async create(categoryName, is_expense){
+    async create(categoryName, is_expense, markup){
         try {
             const query = `INSERT INTO
-                            categorias (nome, is_expense)
-                            VALUES($1, $2)
+                            categorias (nome, is_expense, markup_percentage)
+                            VALUES($1, $2, $3)
                             `
 
-            const values = [categoryName.toUpperCase(), is_expense]
+            const values = [categoryName.toUpperCase(), is_expense, markup]
             const result = await db.query(query,values)
             return result.rows[0]
         }catch (e){
