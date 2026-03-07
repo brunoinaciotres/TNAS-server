@@ -6,6 +6,7 @@ import CategoryRouter from './routes/CategoryRoutes.js'
 import cors from 'cors'
 import UserRouter from './routes/UserRoutes.js'
 import WordsListNewDocRouter from './routes/WordsListNewDocRoutes.js'
+import CardMachineRouter from './routes/CardMachineRoutes.js'
 const PORT = process.env.PORT
 const app = express()
 app.use(cors({
@@ -18,6 +19,7 @@ app.use('/user', UserRouter)
 app.use('/document', DocumentRouter)
 app.use('/category', CategoryRouter)
 app.use('/words_list_new_doc', WordsListNewDocRouter)
+app.use('/card_machine', CardMachineRouter)
 
 app.use("/", (_req, res) => {
   res.status(200).json({ msg: "Ok" })
