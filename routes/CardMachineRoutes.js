@@ -4,8 +4,9 @@ import CardMachineController from '../controllers/CardMachineController.js'
 
 const CardMachineRouter = express.Router()
 
-CardMachineRouter.get('/insert',CardMachineController.insertNewCardMachine )
+CardMachineRouter.post('/insert',CardMachineController.insertNewCardMachine )
 CardMachineRouter.get('/getAll',CardMachineController.getAllMachines )
-
+CardMachineRouter.delete('/delete', CardMachineController.deleteMachine)
+CardMachineRouter.put('/update', CardMachineController.updateMachine)
 
 export default CardMachineRouter
