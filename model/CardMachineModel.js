@@ -2,10 +2,10 @@ import * as db from './index.js'
 
 class CardMachineModel {
 
-    async insertNewMaquina(nome, taxa) {
+    async insertNewMaquina(nome, taxa_debito, taxa_credito, taxa_pix, taxa_voucher) {
         try {
-            const query = "INSERT INTO maquinas_cartao (nome, taxa) VALUES ($1, $2) RETURNING *"
-            const values = [nome, taxa]
+            const query = "INSERT INTO maquinas_cartao (nome, taxa_credito, taxa_debito, taxa_pix, taxa_voucher) VALUES ($1, $2, $3, $4, $5) RETURNING *"
+            const values = [nome, taxa_credito, taxa_debito, taxa_pix, taxa_voucher]
 
             const res = await db.query(query, values)
 
@@ -24,7 +24,10 @@ class CardMachineModel {
             SELECT 
                 id,
                 nome,
-                taxa
+                taxa_debito,
+                taxa_credito,
+                taxa_pix,
+                taxa_voucher
             FROM maquinas_cartao
             ORDER BY nome
         `
@@ -52,18 +55,21 @@ class CardMachineModel {
         }
     }
 
-    async updateMachine(id, nome, taxa) {
+    async updateMachine(id, nome, taxa_debito, taxa_credito, taxa_pix, taxa_voucher) {
         try {
 
             const query = `
             UPDATE maquinas_cartao
             SET nome = $1,
-                taxa = $2
-            WHERE id = $3
+                taxa_debito = $2,
+                taxa_credito = $3,
+                taxa_pix = $4,
+                taxa_voucher = $5
+            WHERE id = $6
             RETURNING *
         `
 
-            const values = [nome, taxa, id]
+            const values = [nome, taxa_debito, taxa_credito, taxa_pix, taxa_voucher, id]
 
             const res = await db.query(query, values)
 

@@ -5,9 +5,9 @@ class CardMachineController {
     async insertNewCardMachine(req, res) {
 
         try {
-            const { nome, taxa } = req.body
+            const { nome, taxa_debito, taxa_credito, taxa_pix, taxa_voucher } = req.body
 
-            if (!nome || taxa === undefined) {
+            if (!nome === undefined) {
                 return res.status(400).json({
                     success: false,
                     message: "Todos os campos obrigatórios devem ser preenchidos."
@@ -16,7 +16,10 @@ class CardMachineController {
 
             const insertedMachine = await CardMachineModel.insertNewMaquina(
                 nome,
-                taxa
+                taxa_debito,
+                taxa_credito,
+                taxa_pix,
+                taxa_voucher
             )
 
             return res.status(200).json({
@@ -89,9 +92,9 @@ class CardMachineController {
 
         try {
 
-            const { id, nome, taxa } = req.body
+            const { id, nome, taxa_debito, taxa_credito, taxa_pix, taxa_voucher } = req.body
 
-            if (!id || !nome || taxa === undefined) {
+            if (!id || !nome === undefined) {
                 return res.status(400).json({
                     success: false,
                     message: "Todos os campos obrigatórios devem ser preenchidos."
@@ -101,7 +104,10 @@ class CardMachineController {
             const updatedMachine = await CardMachineModel.updateMachine(
                 id,
                 nome,
-                taxa
+                taxa_debito,
+                taxa_credito,
+                taxa_pix,
+                taxa_voucher
             )
 
             return res.status(200).json({
