@@ -13,6 +13,22 @@ class VendasDiariasController {
         }
         
     }
+
+    async getVendasByDate(req, res){
+        try {
+            const {date} = req.body
+            console.log("DATE CONTROLLER RECEIVED ->> ", date)
+            let vendas = await VendasDiariasModel.getVendaDiariaByDate(date)
+            
+            return res.status(200).json({
+                success: true,
+                vendas
+            })
+            
+        } catch(e) {
+            console.log(e)
+        }
+    }
 }
 
 export default new VendasDiariasController 
