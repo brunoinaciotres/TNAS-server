@@ -40,11 +40,9 @@ class CategoryModel {
         try {
 
             const query = `
-        SELECT id, nome FROM categorias ORDER BY id DESC
-      `
-
+        SELECT id, nome, markup_percentage FROM categorias ORDER BY id DESC
+        `
             const results = await db.query(query)
-
 
             return results.rows
         } catch (err) {
@@ -59,6 +57,7 @@ class CategoryModel {
             SELECT 
                 c.id, 
                 c.nome, 
+                c.markup_percentage,
                 COALESCE(SUM(d.price_in_cents), 0) AS total_gasto
             FROM categorias c
             LEFT JOIN documents d 
