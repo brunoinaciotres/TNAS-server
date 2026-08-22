@@ -88,11 +88,11 @@ class CaixaController {
       });
 
     } catch (e) {
-      console.error(e);
+      console.log("erro CONTROLLER ", e);
 
       return res.status(500).json({
         success: false,
-        message: "Erro ao inserir caixa."
+        message: e.message
       });
     }
   }

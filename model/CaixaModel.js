@@ -233,8 +233,8 @@ class CaixaModeL {
             return true;
 
         } catch (e) {
-            console.log(e);
-            throw new Error("Erro: " + e);
+            console.log("ERRO MODEL: ", e);
+            throw new Error(e.message);
         }
     }
 
