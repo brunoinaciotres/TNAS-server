@@ -166,6 +166,30 @@ class CaixaController {
 
     }
   }
+
+  async deleteCaixaByDate(req, res) {
+    try {
+      const { date } = req.body;
+
+      console.log("DATE RECEIVED -> ", date);
+
+      await CaixaModel.deleteCaixaByDate(date);
+
+      return res.status(200).json({
+        success: true,
+        message: "Caixa excluído com sucesso."
+      });
+
+    } catch (e) {
+
+      console.log("ERRO CONTROLLER -> ", e);
+
+      return res.status(500).json({
+        success: false,
+        message: e.message
+      });
+    }
+  }
 }
 
 export default new CaixaController()

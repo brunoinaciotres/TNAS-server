@@ -274,6 +274,36 @@ class CaixaModeL {
             throw new Error("Erro: " + e);
         }
     }
+
+    async deleteCaixaByDate(date) {
+        try {
+            await db.query("BEGIN");
+
+            const queryDinheiro = `
+            DELETE FROM vendas_caixa_dinheiro
+            WHERE DATE(data) = $1
+        `;
+
+            const queryCartao = `
+            DELETE FROM vendas_caixa_cartao
+            WHERE DATE(data) = $1
+        `;
+
+            await db.query(queryDinheiro, [date]);
+            await db.query(queryCartao, [date]);
+
+            await db.query("COMMIT");
+
+            return true;
+
+        } catch (e) {
+
+            await db.query("ROLLBACK");
+
+            console.log(e);
+            throw new Error(e.message);
+        }
+    }
 }
 
 export default new CaixaModeL()
