@@ -190,6 +190,24 @@ class CaixaController {
       });
     }
   }
+
+  async getCaixaByMonthAndYear(req, res) {
+    try {
+      const { month, year } = req.body
+      const result = await CaixaModel.getCaixaByMonthAndYear(month, year)
+      return res.status(200).json({
+        success: true,
+        message: result
+      })
+
+    } catch (e) {
+      return res.status(500).json({
+        success: false,
+        message: e.message
+      });
+    }
+
+  }
 }
 
 export default new CaixaController()

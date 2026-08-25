@@ -40,6 +40,45 @@ class CaixaModeL {
         }
     }
 
+    async getCaixaByMonthAndYear(month, year) {
+        try {
+            const query = `
+            SELECT
+                data,
+                SUM(valor_cents) AS total_cents
+            FROM (
+                SELECT
+                    DATE(data) AS data,
+                    valor_cents
+                FROM vendas_caixa_dinheiro
+                WHERE data >= MAKE_DATE($1, $2, 1)
+                AND data < MAKE_DATE($1, $2, 1) + INTERVAL '1 month'
+
+                UNION ALL
+
+                SELECT
+                    DATE(data) AS data,
+                    valor_cents
+                FROM vendas_caixa_cartao
+                WHERE data >= MAKE_DATE($1, $2, 1)
+                AND data < MAKE_DATE($1, $2, 1) + INTERVAL '1 month'
+            ) vendas
+
+            GROUP BY data
+            ORDER BY data DESC;
+        `
+            const values = [year, month]
+
+            const res = await db.query(query, values)
+            return res.rows
+        } catch (e) {
+            console.log(e);
+            throw new Error(e.message);
+        }
+
+
+    }
+
 
     async insertNewVendaCaixaDinheiro(caixa) {
         try {

@@ -10,5 +10,6 @@ CaixaRouter.post('/insertNewVendaCaixaCartao', CaixaController.insertNewVendaCai
 CaixaRouter.post('/insertNewCaixa', CaixaController.insertNewCaixa)
 CaixaRouter.post('/getCaixaByDate', CaixaController.getCaixaByDate)
 CaixaRouter.delete('/deleteCaixaByDate', CaixaController.deleteCaixaByDate)
+CaixaRouter.post('/getCaixaByMonthAndYear', CaixaController.getCaixaByMonthAndYear)
 
 export default CaixaRouter
