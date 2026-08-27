@@ -11,5 +11,6 @@ CaixaRouter.post('/insertNewCaixa', CaixaController.insertNewCaixa)
 CaixaRouter.post('/getCaixaByDate', CaixaController.getCaixaByDate)
 CaixaRouter.delete('/deleteCaixaByDate', CaixaController.deleteCaixaByDate)
 CaixaRouter.post('/getCaixaByMonthAndYear', CaixaController.getCaixaByMonthAndYear)
-
+CaixaRouter.post('/getExpectedRevenue', CaixaController.calculateExpectedRevenue)
+CaixaRouter.get('/getTotalExpenses', CaixaController.calculateTotalExpenses)
 export default CaixaRouter

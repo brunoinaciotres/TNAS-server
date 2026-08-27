@@ -343,6 +343,40 @@ class CaixaModeL {
             throw new Error(e.message);
         }
     }
+
+    async calculateExpectedRevenue() {
+        try {
+            const query = `SELECT 
+                            SUM(d.price_in_cents * (1 + c.markup_percentage)) AS total_with_markup_in_cents
+                            FROM documents d
+                            INNER JOIN categorias c 
+                            ON d.category = c.id
+                            WHERE c.is_expense = false `
+            const res = await  db.query(query)
+            return res.rows
+
+        } catch (e) {
+            console.log(e);
+            throw new Error(e.message);
+        }
+    }
+
+    async calculateTotalExpenses(){
+        try {
+            const query = `SELECT 
+                            SUM(d.price_in_cents) AS total_despesas
+                            FROM documents d
+                            INNER JOIN categorias c 
+                            ON d.category = c.id
+                            WHERE c.is_expense = true;`
+
+            const res = await db.query(query)
+            return res.rows
+        } catch(e){
+            console.log(e)
+            throw new Error(e.message)
+        }
+    }
 }
 
 export default new CaixaModeL()

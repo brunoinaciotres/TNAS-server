@@ -208,6 +208,40 @@ class CaixaController {
     }
 
   }
+
+  async calculateExpectedRevenue(_req, res) {
+    try {
+      const expectedRevenue = await CaixaModel.calculateExpectedRevenue()
+
+      res.status(200).json({
+        success:true,
+        message:expectedRevenue
+      })
+
+    } catch (e) {
+      return res.status(500).json({
+        success: false,
+        message: e.message
+      });
+    }
+  }
+
+   async calculateTotalExpenses(_req, res) {
+    try {
+      const totalExpenses = await CaixaModel.calculateTotalExpenses()
+
+      res.status(200).json({
+        success:true,
+        message:totalExpenses
+      })
+      
+    } catch (e) {
+      return res.status(500).json({
+        success: false,
+        message: e.message
+      });
+    }
+  }
 }
 
 export default new CaixaController()
