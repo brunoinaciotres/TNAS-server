@@ -33,6 +33,7 @@ class DocumentController {
             })
 
         } catch (err) {
+            console.log("ERRO CONTROLLER ",err.message)
             if (err.code === '23505') {
                 return res.status(409).json({ success: false, message: 'Número de nota já cadastrado.' })
             }
