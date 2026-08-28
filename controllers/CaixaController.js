@@ -209,9 +209,10 @@ class CaixaController {
 
   }
 
-  async calculateExpectedRevenue(_req, res) {
+  async calculateExpectedRevenue(req, res) {
     try {
-      const expectedRevenue = await CaixaModel.calculateExpectedRevenue()
+      const {year, month} = req.body
+      const expectedRevenue = await CaixaModel.calculateExpectedRevenue(year,month)
 
       res.status(200).json({
         success:true,

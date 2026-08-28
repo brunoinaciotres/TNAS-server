@@ -344,15 +344,22 @@ class CaixaModeL {
         }
     }
 
-    async calculateExpectedRevenue() {
+    async calculateExpectedRevenue(year, month) {
         try {
             const query = `SELECT 
-                            SUM(d.price_in_cents * (1 + c.markup_percentage)) AS total_with_markup_in_cents
+                            COALESCE(
+                            SUM(d.price_in_cents * (1 + c.markup_percentage)),
+                            0
+                            ) AS total_with_markup_in_cents
                             FROM documents d
                             INNER JOIN categorias c 
                             ON d.category = c.id
-                            WHERE c.is_expense = false `
-            const res = await  db.query(query)
+                            WHERE c.is_expense = false
+                            AND d.date >= make_date($1, $2, 1)
+                            AND d.date < make_date($1, $2, 1) + INTERVAL '1 month';`
+
+            const values = [year, month]
+            const res = await  db.query(query,values)
             return res.rows
 
         } catch (e) {
