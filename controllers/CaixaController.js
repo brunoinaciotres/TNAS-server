@@ -211,12 +211,12 @@ class CaixaController {
 
   async calculateExpectedRevenue(req, res) {
     try {
-      const {year, month} = req.body
-      const expectedRevenue = await CaixaModel.calculateExpectedRevenue(year,month)
+      const { year, month } = req.body
+      const expectedRevenue = await CaixaModel.calculateExpectedRevenue(year, month)
 
       res.status(200).json({
-        success:true,
-        message:expectedRevenue
+        success: true,
+        message: expectedRevenue
       })
 
     } catch (e) {
@@ -227,15 +227,53 @@ class CaixaController {
     }
   }
 
-   async calculateTotalExpenses(_req, res) {
+  async calculateTotalExpenses(req, res) {
     try {
-      const totalExpenses = await CaixaModel.calculateTotalExpenses()
+      const { year, month } = req.body
+      const totalProductsExpenses = await CaixaModel.calculateTotalProductExpenses(year, month)
+      const totalCartaoExpenses = await CaixaModel.calculateDespesasCartao(year, month)
 
       res.status(200).json({
-        success:true,
-        message:totalExpenses
+        success: true,
+        message: Number(totalProductsExpenses) + Number(totalCartaoExpenses)
       })
-      
+
+    } catch (e) {
+      return res.status(500).json({
+        success: false,
+        message: e.message
+      });
+    }
+  }
+
+  async calculateTotalDespesasCartao(req, res) {
+    try {
+      const { year, month } = req.body
+      const totalExpenses = await CaixaModel.calculateDespesasCartao(year, month)
+      console.log("TOTAL EXPENSES -> ", totalExpenses)
+      res.status(200).json({
+        success: true,
+        message: totalExpenses
+      })
+
+    } catch (e) {
+      return res.status(500).json({
+        success: false,
+        message: e.message
+      });
+    }
+  }
+
+  async listExpensesWithTotalValueByYearAndMonth(req, res) {
+    try {
+      const { year, month } = req.body
+      const expensesList = await CaixaModel.listExpensesWithTotalValueByYearAndMonth(year, month)
+      console.log("TOTAL EXPENSES -> ", expensesList)
+      res.status(200).json({
+        success: true,
+        message: expensesList
+      })
+
     } catch (e) {
       return res.status(500).json({
         success: false,

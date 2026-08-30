@@ -359,7 +359,7 @@ class CaixaModeL {
                             AND d.date < make_date($1, $2, 1) + INTERVAL '1 month';`
 
             const values = [year, month]
-            const res = await  db.query(query,values)
+            const res = await db.query(query, values)
             return res.rows
 
         } catch (e) {
@@ -368,18 +368,69 @@ class CaixaModeL {
         }
     }
 
-    async calculateTotalExpenses(){
+    async calculateTotalProductExpenses(year, month) {
         try {
             const query = `SELECT 
                             SUM(d.price_in_cents) AS total_despesas
                             FROM documents d
                             INNER JOIN categorias c 
                             ON d.category = c.id
-                            WHERE c.is_expense = true;`
+                            WHERE c.is_expense = true
+                            AND d.date >= make_date($1, $2, 1)
+                            AND d.date < make_date($1, $2, 1) + INTERVAL '1 month';
+                            `
+            const values = [year, month]
+            const res = await db.query(query, values)
+            return res.rows[0].total_despesas
+        } catch (e) {
+            console.log(e)
+            throw new Error(e.message)
+        }
+    }
 
-            const res = await db.query(query)
+    async calculateDespesasCartao(year, month) {
+        try {
+            const query = `
+							SELECT 
+                            SUM(v.valor_cents * v.taxa)::INTEGER AS total_fee_expense
+                            FROM vendas_caixa_cartao v
+                            WHERE v.data >= make_date($1, $2, 1)
+                            AND v.data < make_date($1, $2, 1) + INTERVAL '1 month'
+                            `
+
+            const values = [year, month]
+
+            const res = await db.query(query, values)
+            return res.rows[0].total_fee_expense
+
+        } catch (e) {
+            console.log(e)
+            throw new Error(e.message)
+        }
+    }
+
+    async listExpensesWithTotalValueByYearAndMonth(year, month) {
+        try {
+            const query = `
+							SELECT
+                                 c.nome,
+                                SUM(d.price_in_cents) AS total
+                            FROM documents d
+                            INNER JOIN categorias c
+                            ON d.category = c.id
+                            WHERE c.is_expense = true
+                              AND d.date >= make_date($1, $2, 1)
+                              AND d.date < make_date($1, $2, 1) + INTERVAL '1 month'
+                            GROUP BY c.nome
+                            ORDER BY total DESC
+                            `
+
+            const values = [year, month]
+
+            const res = await db.query(query, values)
             return res.rows
-        } catch(e){
+
+        } catch (e) {
             console.log(e)
             throw new Error(e.message)
         }
