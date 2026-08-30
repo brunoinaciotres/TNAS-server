@@ -15,5 +15,6 @@ CaixaRouter.post('/getExpectedRevenue', CaixaController.calculateExpectedRevenue
 CaixaRouter.post('/getTotalExpenses', CaixaController.calculateTotalExpenses)
 CaixaRouter.post("/getTotalDespesasCartao", CaixaController.calculateTotalDespesasCartao)
 CaixaRouter.post("/listExpensesByYearAndMonth", CaixaController.listExpensesWithTotalValueByYearAndMonth)
+CaixaRouter.post("/listFaturamentoByYearAndMonth", CaixaController.listFaturamentoWithTotalValueByYearAndMonth)
 
 export default CaixaRouter

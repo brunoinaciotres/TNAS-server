@@ -281,6 +281,27 @@ class CaixaController {
       });
     }
   }
+
+  
+  async listFaturamentoWithTotalValueByYearAndMonth(req, res) {
+    try {
+      const { year, month } = req.body
+      const faturamento = await CaixaModel.listFaturamentoWithTotalValueByYearAndMonth(year, month)
+      console.log("TOTAL EXPENSES -> ", faturamento)
+      res.status(200).json({
+        success: true,
+        message: faturamento
+      })
+
+    } catch (e) {
+      return res.status(500).json({
+        success: false,
+        message: e.message
+      });
+    }
+  }
+
+  
 }
 
 export default new CaixaController()

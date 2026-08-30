@@ -435,6 +435,77 @@ class CaixaModeL {
             throw new Error(e.message)
         }
     }
+
+    async listFaturamentoWithTotalValueByYearAndMonth(year, month) {
+        try {
+            const query = `
+            SELECT
+                COALESCE(
+                    (
+                        SELECT SUM(vd.valor_cents)
+                        FROM vendas_caixa_dinheiro vd
+                        WHERE vd.data >= make_date($1, $2, 1)
+                          AND vd.data < make_date($1, $2, 1) + INTERVAL '1 month'
+                    ),
+                    0
+                ) AS total_dinheiro,
+
+                COALESCE(
+                    (
+                        SELECT SUM(vc.valor_cents)
+                        FROM vendas_caixa_cartao vc
+                        WHERE vc.metodo = 'debito'
+                          AND vc.data >= make_date($1, $2, 1)
+                          AND vc.data < make_date($1, $2, 1) + INTERVAL '1 month'
+                    ),
+                    0
+                ) AS total_debito,
+
+                COALESCE(
+                    (
+                        SELECT SUM(vc.valor_cents)
+                        FROM vendas_caixa_cartao vc
+                        WHERE vc.metodo = 'credito'
+                          AND vc.data >= make_date($1, $2, 1)
+                          AND vc.data < make_date($1, $2, 1) + INTERVAL '1 month'
+                    ),
+                    0
+                ) AS total_credito,
+
+                COALESCE(
+                    (
+                        SELECT SUM(vc.valor_cents)
+                        FROM vendas_caixa_cartao vc
+                        WHERE vc.metodo = 'pix'
+                          AND vc.data >= make_date($1, $2, 1)
+                          AND vc.data < make_date($1, $2, 1) + INTERVAL '1 month'
+                    ),
+                    0
+                ) AS total_pix,
+
+                COALESCE(
+                    (
+                        SELECT SUM(vc.valor_cents)
+                        FROM vendas_caixa_cartao vc
+                        WHERE vc.metodo = 'voucher'
+                          AND vc.data >= make_date($1, $2, 1)
+                          AND vc.data < make_date($1, $2, 1) + INTERVAL '1 month'
+                    ),
+                    0
+                ) AS total_voucher;
+        `;
+
+            const values = [year, month];
+
+            const result = await db.query(query, values);
+
+            return result.rows[0];
+
+        } catch (e) {
+            console.error(e);
+            throw new Error(e.message);
+        }
+    }
 }
 
 export default new CaixaModeL()
