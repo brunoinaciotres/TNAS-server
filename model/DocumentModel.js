@@ -139,7 +139,7 @@ class DocumentModel {
 
     async getDocByDocNumber(docNumber) {
         try {
-            const query = `SELECT * FROM documents where doc_number = $1`
+            const query = `select d.*, c.nome as category_name from documents d inner join categorias c on d.category = c.id  where doc_number = $1`
             const values = [docNumber]
             const res = await db.query(query,values)
             return res.rows
