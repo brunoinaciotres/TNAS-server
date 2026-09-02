@@ -7,5 +7,6 @@ DocumentRouter.get('/getLatestDocs', DocumentController.getLatestDocs)
 DocumentRouter.post('/getDocsByCategorieId', DocumentController.getDocsByCategorieId)
 DocumentRouter.post('/getDocsByCategorieIdAndDate', DocumentController.getDocsByCategorieIdAndDate)
 DocumentRouter.post('/delete', DocumentController.delete)
+DocumentRouter.post('/getDocByNumber', DocumentController.getDocByDocNumber)
 
 export default DocumentRouter

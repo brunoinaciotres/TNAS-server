@@ -129,6 +129,20 @@ class DocumentController {
             console.log(e)
         }
     }
+
+    async getDocByDocNumber(req,res) {
+        try {
+            const {docNumber} = req.body
+            const result = await DocumentModel.getDocByDocNumber(docNumber)
+            return res.status(200).json({
+                success:true,
+                message: result
+            })
+        } catch (e){
+            console.log(e)
+            throw new Error(e.message)
+        }
+    }
 }
 
 

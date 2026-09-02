@@ -27,16 +27,16 @@ class DocumentModel {
         }
     }
 
-    async delete(docId){
+    async delete(docId) {
         try {
             const query = `DELETE FROM documents WHERE id = $1`
             const values = [docId]
             const res = await db.query(query, values)
-            if (res.rowCount > 0){
+            if (res.rowCount > 0) {
                 return res.rows
             }
             return []
-        } catch (e){
+        } catch (e) {
             throw e
         }
     }
@@ -126,14 +126,27 @@ class DocumentModel {
                             AND EXTRACT(YEAR FROM date) = $3
                         ORDER BY date DESC
                         `
-            const values =  [categoryId, month, year]
-            const results = await db.query(query,values)
+            const values = [categoryId, month, year]
+            const results = await db.query(query, values)
             console.log("----RESULTADOS----")
             console.log(results)
             return results.rows
 
         } catch (e) {
             console.log(e)
+        }
+    }
+
+    async getDocByDocNumber(docNumber) {
+        try {
+            const query = `SELECT * FROM documents where doc_number = $1`
+            const values = [docNumber]
+            const res = await db.query(query,values)
+            return res.rows
+
+        } catch (e) {
+            console.error(e);
+            throw new Error(e.message);
         }
     }
 }
