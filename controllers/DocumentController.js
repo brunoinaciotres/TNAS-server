@@ -1,10 +1,12 @@
 import DocumentModel from "../model/DocumentModel.js";
 
 class DocumentController {
+    
+
     async insertDoc(req, res) {
         try {
             const { dateValue, descriptionValue, categoryValue, priceValue, docNumberValue } = req.body
-
+            console.log("PRICE VALUE HEEERE --->>> ", priceValue)
             if (!dateValue || !descriptionValue || !categoryValue || !priceValue) {
                 return res.status(400).json({
                     success: false,
@@ -12,18 +14,15 @@ class DocumentController {
                 })
             }
 
-            function transformIntoCents(money) {
-                return Number(money) * 100
-            }
-
             const docData = {
                 dateValue,
                 descriptionValue,
                 categoryValue,
-                priceValue: transformIntoCents(priceValue),
+                priceValue: Math.round(Number(priceValue) * 100),
                 docNumberValue,
                 isFiscalDoc: docNumberValue ? 1 : 0
             }
+
 
             const newDoc = await DocumentModel.create(docData)
 
@@ -33,7 +32,7 @@ class DocumentController {
             })
 
         } catch (err) {
-            console.log("ERRO CONTROLLER ",err.message)
+            console.log("ERRO CONTROLLER ", err.message)
             if (err.code === '23505') {
                 return res.status(409).json({ success: false, message: 'Número de nota já cadastrado.' })
             }
@@ -41,20 +40,20 @@ class DocumentController {
         }
     }
 
-    async delete(req,res){
+    async delete(req, res) {
         try {
-            const {docId} = req.body
+            const { docId } = req.body
             const res = await DocumentModel.delete(docId)
             return res.status(201).json({
                 success: true,
                 res
             })
 
-        } catch(e){
-            return res.status(500).json({ 
-                success: false, 
+        } catch (e) {
+            return res.status(500).json({
+                success: false,
                 message: 'Erro ao deletar documento',
-                error: e.message 
+                error: e.message
             })
         }
     }
@@ -118,11 +117,11 @@ class DocumentController {
                 })
             }
 
-             return res.status(200).json({
-                    success: true,
-                    docs: [],
-                    msg:"Nenhum documento encontrado"
-                })
+            return res.status(200).json({
+                success: true,
+                docs: [],
+                msg: "Nenhum documento encontrado"
+            })
 
 
         } catch (e) {
@@ -130,15 +129,15 @@ class DocumentController {
         }
     }
 
-    async getDocByDocNumber(req,res) {
+    async getDocByDocNumber(req, res) {
         try {
-            const {docNumber} = req.body
+            const { docNumber } = req.body
             const result = await DocumentModel.getDocByDocNumber(docNumber)
             return res.status(200).json({
-                success:true,
+                success: true,
                 message: result
             })
-        } catch (e){
+        } catch (e) {
             console.log(e)
             throw new Error(e.message)
         }
